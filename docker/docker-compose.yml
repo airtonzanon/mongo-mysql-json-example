@@ -14,9 +14,20 @@ services:
     volumes:
       - ../:/var/www
 
-  mongodb:
-    image: mongo
+#  mongodb:
+#    image: mongo
+#    ports:
+#      - "27017:27017"
+#    volumes:
+#      - ./mongodb:/data/db
+  mysql:
+    image: mysql:5.7
     ports:
-      - "27017:27017"
+      - "3306:3306"
     volumes:
-      - ./mongodb:/data/db
+      - ./mysqldata:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=remembender
+      - MYSQL_USER=remembender
+      - MYSQL_PASSWORD=remembender
