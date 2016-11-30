@@ -2,6 +2,9 @@
 
 require_once 'conn.php';
 
+use League\JsonGuard\Dereferencer,
+    League\JsonGuard\Validator;
+
 $collection = $collection->selectCollection('users');
 
 if (isset($_GET['insert'])) {
@@ -10,11 +13,38 @@ if (isset($_GET['insert'])) {
         'email' => $_GET['email'],
         'name' => $_GET['name']);
 
-    $insertOneResult = $collection->insertOne($array);
+    $deref = new Dereferencer();
 
-    printf("Inserted %d document(s)\n", $insertOneResult->getInsertedCount());
+    $schemaArray = array(
+        'properties' => array(
+            'username' => array(
+                'type' => 'string',
+                'maxLength' => 6
+            ),
+            'email' => array(
+                '$ref' => '#/properties/username',
+            ),
+            'name' => array(
+                '$ref' => '#/properties/username',
+            ),
+        ),
+    );
 
-    var_dump($insertOneResult->getInsertedId());
+    $schema = $deref->dereference($schemaArray);
+
+    $validator = new Validator(json_decode(json_encode($array)), json_decode(json_encode($schema)));
+
+    if ($validator->passes()) {
+        $insertOneResult = $collection->insertOne($array);
+
+        printf("Inserted %d document(s)\n", $insertOneResult->getInsertedCount());
+
+        var_dump($insertOneResult->getInsertedId());
+    }
+
+    if ($validator->fails()) {
+        var_dump($validator->errors());
+    }
 
 } else if (isset($_GET['select'])) {
 
@@ -47,7 +77,7 @@ if (isset($_GET['insert'])) {
 
 } else if (isset($_GET['delete'])) {
     $array = array(
-      'username' => $_GET['user']
+        'username' => $_GET['user']
     );
 
     $deleteResult = $collection->deleteOne($array);

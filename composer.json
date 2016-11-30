@@ -1,0 +1,6 @@
+{
+    "require": {
+        "mongodb/mongodb": "^1.0.0",
+        "league/json-guard": "^0.5.1"
+    }
+}

@@ -1,0 +1,4 @@
+vendor
+.idea
+docker/mongodb
+docker/mysqldata
