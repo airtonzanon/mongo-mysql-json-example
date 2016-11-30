@@ -2,24 +2,55 @@
 
 require_once 'conn.php';
 
-$array = array(
-  'telefone' => '011986502050'
-);
+$collection = $collection->selectCollection('users');
 
-$column = 'things';
-$param = 'telefone';
+if (isset($_GET['insert'])) {
 
-$sql = 'SELECT  
-    json_extract(things, "$.telefone")
-    FROM remembender.remember';
-$sth = $dbh->prepare($sql);
-$sth->execute();
-$result = $sth->fetchAll();
+    $array = array('username' => $_GET['user'],
+        'email' => $_GET['email'],
+        'name' => $_GET['name']);
 
-var_dump($result);
+    $insertOneResult = $collection->insertOne($array);
 
-/*
-$sql = 'INSERT INTO remember (things) VALUES(:thing)';
-$sth = $dbh->prepare($sql);
-$sth->bindParam(":thing",json_encode($array));
-$sth->execute();*/
+    printf("Inserted %d document(s)\n", $insertOneResult->getInsertedCount());
+
+    var_dump($insertOneResult->getInsertedId());
+
+} else if (isset($_GET['select'])) {
+
+    $array = array(
+        'username' => $_GET['user']
+    );
+
+    $document = $collection->findOne($array);
+
+    var_dump($document);
+
+} else if (isset($_GET['update'])) {
+
+    $find = array(
+        'username' => $_GET['user'],
+    );
+
+    $update = array(
+        '$set' => array(
+            'email' => $_GET['email']
+        )
+    );
+
+    $update = $collection->updateOne(
+        $find, $update
+    );
+
+    printf("Matched %d document(s)\n", $update->getMatchedCount());
+    printf("Modified %d document(s)\n", $update->getModifiedCount());
+
+} else if (isset($_GET['delete'])) {
+    $array = array(
+      'username' => $_GET['user']
+    );
+
+    $deleteResult = $collection->deleteOne($array);
+
+    printf("Deleted %d document(s)\n", $deleteResult->getDeletedCount());
+}
