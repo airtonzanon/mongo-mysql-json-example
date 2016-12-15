@@ -1,10 +1,6 @@
 <?php
 
-require_once 'conn.php';
-
-$array = array(
-    'telefone' => '011986502050'
-);
+require_once 'vendor/autoload.php';
 
 use League\JsonGuard\Dereferencer,
     League\JsonGuard\Validator;
@@ -56,18 +52,6 @@ if (isset($_GET['insert'])) {
         'username' => $_GET['user']
     );
 
-$column = 'things';
-$param = 'telefone';
-
-$sql = 'SELECT  
-    json_extract(things, "$.telefone")
-    FROM remembender.remember';
-$sth = $dbh->prepare($sql);
-$sth->execute();
-$result = $sth->fetchAll();
-
-var_dump($result);
-
     $find = array(
         'username' => $_GET['user'],
     );
@@ -94,10 +78,3 @@ var_dump($result);
 
     printf("Deleted %d document(s)\n", $deleteResult->getDeletedCount());
 }
-
-
-/*
-$sql = 'INSERT INTO remember (things) VALUES(:thing)';
-$sth = $dbh->prepare($sql);
-$sth->bindParam(":thing",json_encode($array));
-$sth->execute();*/

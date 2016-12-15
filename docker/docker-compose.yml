@@ -14,12 +14,12 @@ services:
     volumes:
       - ../:/var/www
 
-#  mongodb:
-#    image: mongo
-#    ports:
-#      - "27017:27017"
-#    volumes:
-#      - ./mongodb:/data/db
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb:/data/db
   mysql:
     image: mysql:5.7
     ports:
