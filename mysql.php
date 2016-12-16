@@ -8,14 +8,14 @@ use League\JsonGuard\Dereferencer,
 
 if (isset($_GET['select'])) {
 
-    $param = '$.telefone';
+    $array = json_encode([32]);
 
-    $sql = 'SELECT
-        json_unquote(json_extract(things, "' . $param . '")),
-        things->>"' . $param . '"
-        FROM remembender.remember';
+    $sql = 'SELECT things->"$.tags"
+            FROM remember as e
+            where JSON_CONTAINS(things->"$.tags", :value) = 1';
 
     $sth = $dbh->prepare($sql);
+    $sth->bindParam(":value", $array);
     $sth->execute();
     $result = $sth->fetchAll();
 
@@ -24,24 +24,18 @@ if (isset($_GET['select'])) {
 
 if (isset($_GET['insert'])) {
 
-    $array = array('username' => 'airton',
-        'telefone' => 11986502050,
-        'name' => 'Airton Zanon');
+    $array = array('tags' => array(
+        '1280x800',
+        32,
+        'teste'
+    ));
 
     $deref = new Dereferencer();
 
     $schemaArray = array(
         'properties' => array(
-            'username' => array(
-                'type' => 'string',
-                'maxLength' => 6
-            ),
-            'telefone' => array(
-                'type' => 'integer',
-                'maxLength' => 11
-            ),
-            'name' => array(
-                '$ref' => '#/properties/username',
+            'tags' => array(
+                'type' => 'Object'
             ),
         ),
     );
