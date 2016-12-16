@@ -2,3 +2,4 @@ vendor
 .idea
 docker/mongodb
 docker/mysqldata
+composer.lock
