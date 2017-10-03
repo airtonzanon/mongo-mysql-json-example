@@ -1,6 +1,8 @@
 {
     "require": {
         "mongodb/mongodb": "^1.0.0",
-        "league/json-guard": "^0.5.1"
+        "league/json-guard": "^0.5.1",
+        "doctrine/migrations": "1.5.*",
+        "symfony/console": "~2.5"
     }
 }

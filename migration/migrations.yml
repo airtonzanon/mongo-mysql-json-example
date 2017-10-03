@@ -1,0 +1,4 @@
+name: Xuplau Migrations
+migrations_namespace: XuplauMigrations
+table_name: migration_versions
+migrations_directory: migrations
