@@ -1,6 +1,6 @@
 <?php
 
-require_once 'vendor/autoload.php';
+require_once 'conn.php';
 
 use League\JsonGuard\Dereferencer,
     League\JsonGuard\Validator;
@@ -8,6 +8,8 @@ use League\JsonGuard\Dereferencer,
 $collection = $collection->selectCollection('users');
 
 if (isset($_GET['insert'])) {
+
+    //?insert=1&user=ivan&name=Ivan&email=ivanrosolen@gmail.com
 
     $array = array('username' => $_GET['user'],
         'email' => $_GET['email'],
@@ -48,6 +50,8 @@ if (isset($_GET['insert'])) {
 
 } else if (isset($_GET['select'])) {
 
+    //?select=1&user=ivanrosolen&email=ivanrosolen@hotmail.com
+
     $array = array(
         'username' => $_GET['user']
     );
@@ -70,6 +74,9 @@ if (isset($_GET['insert'])) {
     printf("Modified %d document(s)\n", $update->getModifiedCount());
 
 } else if (isset($_GET['delete'])) {
+
+    //?delete=1&user=ivanr
+
     $array = array(
         'username' => $_GET['user']
     );

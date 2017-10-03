@@ -1,7 +1,6 @@
 <?php
 
 require_once 'conn.php';
-require_once 'vendor/autoload.php';
 
 use League\JsonGuard\Dereferencer,
     League\JsonGuard\Validator;
